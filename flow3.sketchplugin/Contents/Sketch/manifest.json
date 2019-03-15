@@ -1,0 +1,36 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "test",
+      "identifier": "flow3.test-identifier",
+      "script": "test.js"
+    },
+    {
+      "name": "my-command",
+      "identifier": "flow3.my-command-identifier",
+      "script": "my-command.js"
+    },
+    {
+      "name": "Create",
+      "identifier": "flow3.create-identifier",
+      "script": "create.js"
+    }
+  ],
+  "menu": {
+    "title": "Flow3",
+    "items": [
+      "flow3.my-command-identifier",
+      "flow3.create-identifier"
+    ]
+  },
+  "version": "0.1.0",
+  "name": "Flow3",
+  "identifier": "Flow3",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml",
+  "author": "buz96",
+  "authorEmail": "oleksiy.kobozev@gmail.com"
+}

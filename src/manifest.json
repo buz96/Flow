@@ -1,0 +1,29 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "test",
+      "identifier": "flow3.test-identifier",
+      "script": "./test.js"
+    },
+    {
+      "name": "my-command",
+      "identifier": "flow3.my-command-identifier",
+      "script": "./my-command.js"
+    },
+      {
+      "name": "Create",
+      "identifier": "flow3.create-identifier",
+      "script": "./create.js"
+    }
+  ],
+  "menu": {
+    "title": "Flow3",
+    "items": [
+      "flow3.my-command-identifier",
+      "flow3.create-identifier"
+    ]
+  }
+}
