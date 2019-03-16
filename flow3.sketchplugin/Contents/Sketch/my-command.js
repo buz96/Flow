@@ -111,58 +111,10 @@ __webpack_require__.r(__webpack_exports__);
   var selectedLayers = doc.selectedLayers;
   var selectedCount = selectedLayers.length;
   var currentArtboard = selectedLayers.layers[0];
-  var lg = currentArtboard.points;
+  var lg = currentArtboard;
   var currentName = currentArtboard.name;
   var artboardFrame = currentArtboard.frame; //var lg = selectedLayers.name
   //console.log(lg)
-
-  new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath({
-    name: 'Flow way',
-    shapePath: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath.ShapeType.Custom,
-    parent: currentArtboard,
-    frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(10, 10, 50, 60),
-    points: [{
-      type: 'CurvePoint',
-      cornerRadius: 0,
-      curveFrom: [{
-        x: 0.2,
-        y: 0.2
-      }],
-      curveTo: [{
-        x: 0.2,
-        y: 0.2
-      }],
-      point: [{
-        x: 0.2,
-        y: 0.2
-      }],
-      pointType: 'Straight'
-    }, {
-      type: 'CurvePoint',
-      cornerRadius: 0,
-      curveFrom: [{
-        x: 1,
-        y: 1
-      }],
-      curveTo: [{
-        x: 1,
-        y: 1
-      }],
-      point: [{
-        x: 1,
-        y: 1
-      }],
-      pointType: 'Straight'
-    }],
-    closed: false,
-    style: {
-      fills: [],
-      borders: [{
-        color: '#F78B00'
-      }]
-    }
-  });
-  sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message("Done!");
 });
 
 /***/ }),

@@ -112,6 +112,20 @@ __webpack_require__.r(__webpack_exports__);
   var selectedCount = selectedLayers.length;
   var Z = 4; ////////////////////////////
 
+  var symbolsPage = null;
+  var pages = document.pages;
+
+  for (var q = pages.length - 1; q >= 0; q--) {
+    var pageName = document.pages[q].name;
+    console.log(pageName);
+
+    if (pageName == 'Symbols') {
+      symbolsPage = document.pages[q];
+      break;
+    }
+  } //function getSymbol(){}
+
+
   function searchFlow(currentArtboard) {
     var lrs = currentArtboard.layers;
     var lng = lrs.length;
@@ -119,13 +133,14 @@ __webpack_require__.r(__webpack_exports__);
 
     for (var b = lng - 1; b >= 0; b--) {
       var selectedChild = lrs[b];
-      var flw = selectedChild.flow; //console.log(flw)
+      var flw = selectedChild.flow;
 
       if (flw == undefined) {
-        console.log('flow not found'); //console.log(selectedChild)
+        console.log('flow not found');
 
         if (selectedChild.type == 'SymbolInstance') {
-          console.log('That is symbol'); //get staff from symbol
+          console.log('That is symbol'); //getSymbol()
+          //get staff from symbol
         } else {
           if (selectedChild.type == 'Group') {
             if (selectedChild.layers > 0) {
@@ -154,84 +169,53 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
         var trgtID = flw.targetId;
-        console.log(trgtID);
-        var pageArtboard = page.layers;
+        var targetArtboard = page.layers;
 
-        for (var c = pageArtboard.length - 1; c >= 0; c--) {
-          if (pageArtboard[c].id == trgtID) {
-            console.log('target is ' + pageArtboard[c].name); //new sketch.
-
+        for (var c = targetArtboard.length - 1; c >= 0; c--) {
+          if (targetArtboard[c].id == trgtID) {
+            console.log('target is ' + targetArtboard[c].name);
             new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Text({
               parent: artboard,
               alignment: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Text.Alignment.center,
-              text: 'to ' + pageArtboard[c].name,
+              text: 'to ' + targetArtboard[c].name,
               fixedWidth: true,
               frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(artboardX + X, artboardY + Y, W, H)
             });
-            new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath({
-              name: 'Flow way',
-              shapePath: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath.ShapeType.Custom,
-              parent: artboard,
-              frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(30, 30, 50, 60),
-              points: [{
-                type: 'CurvePoint',
-                cornerRadius: 0,
-                curveFrom: [0.20, 0.20],
-                curveTo: [0.20, 0.20],
-                point: [(0.20, 0.20)],
-                pointType: 'Straight'
-              }, {
-                type: 'CurvePoint',
-                cornerRadius: 0,
-                curveFrom: (0.20, 0.40),
-                curveTo: (0.20, 0.40),
-                point: (0.20, 0.40),
-                pointType: 'Straight'
-              }, {
-                type: 'CurvePoint',
-                cornerRadius: 0,
-                curveFrom: (0.20, 0.20),
-                curveTo: (0.20, 0.20),
-                point: (0.20, 0.20),
-                pointType: 'Straight'
-              }],
-              closed: false,
-              style: {
-                fills: [],
-                borders: [{
-                  color: '#F78B00'
-                }]
-              }
+            var trgtX = targetArtboard[c].frame.x;
+            var trgtY = targetArtboard[c].frame.y;
+            var path = NSBezierPath.bezierPath(); //path.parent = artboard; //
+
+            path.moveToPoint(NSMakePoint(X, Y));
+            path.lineToPoint(NSMakePoint(trgtX / Z, trgtY / Z)); //path.lineToPoint(NSMakePoint(100,100));
+
+            var shape = MSShapeGroup.layerWithPath(MSPath.pathWithBezierPath(path));
+            var border = shape.style().addStylePartOfType(1);
+            border.color = MSColor.colorWithRGBADictionary({
+              r: 0.8,
+              g: 0.1,
+              b: 0.1,
+              a: 1
             });
-            console.log('curve is created');
+            border.thickness = 3;
+            var documentData = context.document.documentData();
+            var currentParentGroup = documentData.currentPage().currentArtboard() || documentData.currentPage();
+            context.document.currentPage().addLayers([shape]);
             /*
-            points: 
-            [ { type: 'CurvePoint',
-              cornerRadius: 0,
-              curveFrom: [Object],
-              curveTo: [Object],
-              point: [Object],
-              pointType: 'Straight' },
-             { type: 'CurvePoint',
-              cornerRadius: 10,
-              curveFrom: [Object],
-              curveTo: [Object],
-              point: [Object],
-              pointType: 'Straight' },
-             { type: 'CurvePoint',
-              cornerRadius: 10,
-              curveFrom: [Object],
-              curveTo: [Object],
-              point: [Object],
-              pointType: 'Straight' },
-             { type: 'CurvePoint',
-              cornerRadius: 0,
-              curveFrom: [Object],
-              curveTo: [Object],
-              point: [Object],
-              pointType: 'Straight' } ],
-            closed: false }
+            new sketch.ShapePath({
+            name: 'Flow way',
+            shapePath: sketch.ShapePath.ShapeType.Custom,
+            parent: artboard,
+            //frame: new sketch.Rectangle( 30, 30, 50, 60),
+            points: [ 
+            { NSMakePoint(10,10), },
+            { NSMakePoint(10,120), },
+              ], 
+            			closed: false,
+            // style: {fills: [],borders: [{ color: '#F78B00' }],},
+            })
             */
+
+            console.log('curve is created');
           }
         }
       }
@@ -298,7 +282,9 @@ __webpack_require__.r(__webpack_exports__);
 
     artboard.adjustToFit();
     document.centerOnLayer(artboard);
-    sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message("Creating of flow chart is done!");
+    sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message('Creating of flow chart is done!');
+    var sound = NSSound.soundNamed('Tink');
+    sound.play();
   }
 });
 

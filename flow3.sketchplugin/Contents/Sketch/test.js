@@ -104,27 +104,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sketch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sketch__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-  var path = NSBezierPath.bezierPath();
-  path.moveToPoint(NSMakePoint(10, 10));
-  path.lineToPoint(NSMakePoint(100, 10));
-  path.lineToPoint(NSMakePoint(100, 0));
-  path.lineToPoint(NSMakePoint(120, 15));
-  path.lineToPoint(NSMakePoint(100, 30));
-  path.lineToPoint(NSMakePoint(100, 20));
-  path.lineToPoint(NSMakePoint(10, 20));
-  path.closePath();
-  var shape = MSShapeGroup.layerWithPath(MSPath.pathWithBezierPath(path));
-  var fill = shape.style().addStylePartOfType(0); // `0` constant indicates that we need a `fill` part to be created
-
-  fill.color = MSColor.colorWithRGBADictionary({
-    r: 0.8,
-    g: 0.1,
-    b: 0.1,
-    a: 1
-  });
-  var documentData = context.document.documentData();
-  var currentParentGroup = documentData.currentPage().currentArtboard() || documentData.currentPage();
-  currentParentGroup.addLayers([shape]);
+  var doc = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.getSelectedDocument();
+  var document = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.fromNative(context.document);
+  var page = document.selectedPage;
+  var selectedLayers = doc.selectedLayers;
+  var selectedCount = selectedLayers.length;
 });
 
 /***/ }),
