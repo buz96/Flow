@@ -114,7 +114,8 @@ __webpack_require__.r(__webpack_exports__);
   var lg = currentArtboard;
   var currentName = currentArtboard.name;
   var artboardFrame = currentArtboard.frame; //var lg = selectedLayers.name
-  //console.log(lg)
+
+  console.log(lg);
 });
 
 /***/ }),

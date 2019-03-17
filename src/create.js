@@ -29,9 +29,19 @@ for (var q = pages.length - 1; q >= 0; q--) {
     }
 }
 
-//function getSymbol(){}
+function getSymbol(symbolID){
+
+  for (var e = symbolsPage.layers.length - 1; q >= 0; q--) {
+    if(symbolsPage.layers[q].symbolId == symbolID){
+      console.log('🔥🔥🔥 Symbol is finded')
+      searchFlow(symbolsPage.layers[q])
+    break
+    }
+}
+}
 
 function searchFlow (currentArtboard){
+  try{
 
 	var lrs = currentArtboard.layers
 	var lng = lrs.length
@@ -48,8 +58,10 @@ function searchFlow (currentArtboard){
 
 				if(selectedChild.type == 'SymbolInstance'){
 					console.log('That is symbol')
+
+          var symbolID = selectedChild.symbolId
 	         
-          //getSymbol()
+          getSymbol(symbolID)
 
 					//get staff from symbol
 				}
@@ -152,6 +164,7 @@ function searchFlow (currentArtboard){
 			
 			}
 		}
+  } catch(err) {console.log('😿 an error'+err)}
 }
 
 

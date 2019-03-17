@@ -19,9 +19,7 @@ var artboardFrame = currentArtboard.frame
 
 //var lg = selectedLayers.name
 
-//console.log(lg)
-
- 
+console.log(lg)
 
 
 }
