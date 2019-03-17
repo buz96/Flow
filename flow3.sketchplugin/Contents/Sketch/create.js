@@ -123,7 +123,41 @@ __webpack_require__.r(__webpack_exports__);
       symbolsPage = document.pages[q];
       break;
     }
+  } //find or create style for Hotspot representation
+
+
+  var layersStyles = document.getSharedLayerStyles();
+  var sK = layersStyles.length - 1;
+
+  for (var lsnum = layersStyles.length - 1; lsnum >= 0; lsnum--) {
+    var currentStyleName = layersStyles[lsnum].name;
+
+    if (currentStyleName == 'Flow styles/Hotspot') {
+      console.log('🤔 Flow styles/Hotspot - is alredy exist');
+      var dawd = layersStyles[lsnum];
+      var hotspotStyle = layersStyles[lsnum].id;
+      console.log(hotspotStyle);
+      break;
+    } else {
+      sK--;
+    }
   }
+
+  if (sK == lsnum) {
+    var _hotspotStyle = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.SharedStyle.fromStyle({
+      name: 'Flow styles/Hotspot',
+      style: {
+        fills: [],
+        borders: [{
+          color: '#F78B00'
+        }]
+      },
+      document: document
+    });
+
+    var _hotspotStyleId = _hotspotStyle.id;
+  } // Hotspot style is done
+
 
   function getSymbol(symbolID) {
     for (var e = symbolsPage.layers.length - 1; q >= 0; q--) {
@@ -168,17 +202,13 @@ __webpack_require__.r(__webpack_exports__);
           var Y = selectedChild.frame.y / Z;
           var W = selectedChild.frame.width / Z;
           var H = selectedChild.frame.height / Z;
-          new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Shape({
+          var hotspot = new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Shape({
             frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(artboardX + X, artboardY + Y, W, H),
             parent: artboard,
             name: selectedChild.name,
-            style: {
-              fills: [],
-              borders: [{
-                color: '#F78B00'
-              }]
-            }
+            sharedStyleId: hotspotStyleId
           });
+          hotspot.style.syncWithSharedStyle(hotspotStyleId);
           var trgtID = flw.targetId;
           var targetArtboard = page.layers;
 
@@ -225,8 +255,6 @@ __webpack_require__.r(__webpack_exports__);
               // style: {fills: [],borders: [{ color: '#F78B00' }],},
               })
               */
-
-              console.log('curve is created');
             }
           }
         }
@@ -270,9 +298,7 @@ __webpack_require__.r(__webpack_exports__);
       	scales: '1',
       	formats: 'png'
       	}
-      )
-      	console.log(preview)
-      */
+      )		*/
 
       var shape = new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Shape({
         frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(artboardX, artboardY, artboardW, artboardH),

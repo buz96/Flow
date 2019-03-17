@@ -104,11 +104,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sketch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sketch__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
+  var hotspotStyle = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.SharedStyle.fromStyle({
+    name: 'Flow styles/Hotspot',
+    style: {
+      fills: [],
+      borders: [{
+        color: '#F78B00'
+      }]
+    },
+    document: document
+  });
   var doc = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.getSelectedDocument();
   var document = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.fromNative(context.document);
   var page = document.selectedPage;
   var selectedLayers = doc.selectedLayers;
   var selectedCount = selectedLayers.length;
+  var currentArtboard = selectedLayers.layers[0];
+  currentArtboard.style.syncWithSharedStyle(hotspotStyle);
 });
 
 /***/ }),

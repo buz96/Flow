@@ -29,6 +29,42 @@ for (var q = pages.length - 1; q >= 0; q--) {
     }
 }
 
+
+//find or create style for Hotspot representation
+
+var layersStyles = document.getSharedLayerStyles()
+var sK = layersStyles.length - 1
+
+for (var lsnum = layersStyles.length - 1; lsnum >= 0; lsnum--) {
+  let currentStyleName = layersStyles[lsnum].name
+  
+    if(currentStyleName == 'Flow styles/Hotspot'){
+      console.log('🤔 Flow styles/Hotspot - is alredy exist' )
+      let dawd = layersStyles[lsnum]
+      const hotspotStyle = layersStyles[lsnum].id
+      console.log(hotspotStyle)
+    break
+    }
+    else{
+      sK--
+    }
+}
+
+if (sK == lsnum) {
+  const hotspotStyle = sketch.SharedStyle.fromStyle({
+    name: 'Flow styles/Hotspot',
+    style: {
+          fills: [],
+          borders: [{ color: '#F78B00' }],
+          }, 
+    document: document
+  });
+  const hotspotStyleId = hotspotStyle.id
+}
+
+// Hotspot style is done
+
+
 function getSymbol(symbolID){
 
   for (var e = symbolsPage.layers.length - 1; q >= 0; q--) {
@@ -88,21 +124,18 @@ function searchFlow (currentArtboard){
 			console.log('flow is Detected')
 			
 			var X = selectedChild.frame.x/Z
-    		var Y = selectedChild.frame.y/Z
-    		var W = selectedChild.frame.width/Z
+    	var Y = selectedChild.frame.y/Z
+    	var W = selectedChild.frame.width/Z
 			var H = selectedChild.frame.height/Z
 
 
-			new sketch.Shape({
-
+			var hotspot = new sketch.Shape({
     			frame: new sketch.Rectangle( artboardX+X, artboardY+Y, W, H),
       			parent: artboard,
       			name: selectedChild.name,
-      			style: {
-        		fills: [],
-        		borders: [{ color: '#F78B00' }],
-      			},
+      			sharedStyleId: hotspotStyleId
     		})		
+      hotspot.style.syncWithSharedStyle(hotspotStyleId)
 
     		let trgtID = flw.targetId
 
@@ -155,8 +188,6 @@ function searchFlow (currentArtboard){
 						// style: {fills: [],borders: [{ color: '#F78B00' }],},
 					})
           */
-          
-					console.log('curve is created')
 
 				}
 
@@ -164,7 +195,9 @@ function searchFlow (currentArtboard){
 			
 			}
 		}
-  } catch(err) {console.log('😿 an error'+err)}
+  } catch(err) {
+    console.log('😿 an error'+err)
+  }
 }
 
 
@@ -214,10 +247,7 @@ else
 			scales: '1',
 			formats: 'png'
 			}
-		)
-
-		console.log(preview)
-		*/
+		)		*/
 		
 		const shape = new sketch.Shape({
 
