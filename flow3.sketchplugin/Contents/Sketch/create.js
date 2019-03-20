@@ -125,42 +125,42 @@ __webpack_require__.r(__webpack_exports__);
     }
   } //find or create style for Hotspot representation
 
-
-  var layersStyles = document.getSharedLayerStyles();
-  var sK = layersStyles.length - 1;
-
+  /*
+  var layersStyles = document.getSharedLayerStyles()
+  var sK = layersStyles.length - 1
+  
   for (var lsnum = layersStyles.length - 1; lsnum >= 0; lsnum--) {
-    var currentStyleName = layersStyles[lsnum].name;
-
-    if (currentStyleName == 'Flow styles/Hotspot') {
-      console.log('🤔 Flow styles/Hotspot - is alredy exist');
-      var dawd = layersStyles[lsnum];
-      var hotspotStyle = layersStyles[lsnum].id;
-      console.log(hotspotStyle);
-      break;
-    } else {
-      sK--;
-    }
-  }
-
-  if (sK == lsnum) {
-    var _hotspotStyle = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.SharedStyle.fromStyle({
-      name: 'Flow styles/Hotspot',
+    let currentStyleName = layersStyles[lsnum].name
+    
+      if(currentStyleName == 'Flow styles/Hotspot'){
+        console.log('🤔 Flow styles/Hotspot - is alredy exist' )
+        const hotspotStyleId = layersStyles[lsnum].id
+        //console.log(layersStyles[lsnum])
+      break
+      }
+  } 
+  
+  //if (lsnum == 0) {
+    const hotspotStyle = sketch.SharedStyle.fromStyle({
+          name: 'Flow styles/Hotspot',
       style: {
-        fills: [],
-        borders: [{
-          color: '#F78B00'
-        }]
-      },
+            fills: [],
+            borders: [{ color: '#F78B00' }],
+            }, 
       document: document
     });
-
-    var _hotspotStyleId = _hotspotStyle.id;
-  } // Hotspot style is done
+    hotspotStyle.StyleType = Layer
+    
+  //}
+  const hotspotStyleId = hotspotStyle.id
+  
+  */
+  // Hotspot style is done
 
 
   function getSymbol(symbolID) {
     for (var e = symbolsPage.layers.length - 1; q >= 0; q--) {
+      // use getSymbolMasterWithID instead
       if (symbolsPage.layers[q].symbolId == symbolID) {
         console.log('🔥🔥🔥 Symbol is finded');
         searchFlow(symbolsPage.layers[q]);
@@ -197,7 +197,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           }
         } else {
-          console.log('flow is Detected');
+          console.log('😺 flow "' + selectedChild.name + '" is Detected');
           var X = selectedChild.frame.x / Z;
           var Y = selectedChild.frame.y / Z;
           var W = selectedChild.frame.width / Z;
@@ -206,9 +206,15 @@ __webpack_require__.r(__webpack_exports__);
             frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(artboardX + X, artboardY + Y, W, H),
             parent: artboard,
             name: selectedChild.name,
-            sharedStyleId: hotspotStyleId
-          });
-          hotspot.style.syncWithSharedStyle(hotspotStyleId);
+            //sharedStyleId: hotspotStyleId,
+            style: {
+              fills: [],
+              borders: [{
+                color: '#F78B00'
+              }]
+            }
+          }); //hotspot.style.syncWithSharedStyle(hotspotStyleId)
+
           var trgtID = flw.targetId;
           var targetArtboard = page.layers;
 
@@ -224,36 +230,41 @@ __webpack_require__.r(__webpack_exports__);
               });
               var trgtX = targetArtboard[c].frame.x;
               var trgtY = targetArtboard[c].frame.y;
-              var path = NSBezierPath.bezierPath(); //path.parent = artboard; //
-
-              path.moveToPoint(NSMakePoint(X, Y));
-              path.lineToPoint(NSMakePoint(trgtX / Z, trgtY / Z)); //path.lineToPoint(NSMakePoint(100,100));
-
-              var shape = MSShapeGroup.layerWithPath(MSPath.pathWithBezierPath(path));
-              var border = shape.style().addStylePartOfType(1);
-              border.color = MSColor.colorWithRGBADictionary({
-                r: 0.8,
-                g: 0.1,
-                b: 0.1,
-                a: 1
+              new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath({
+                name: 'Flow way',
+                shapePath: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath.ShapeType.Custom,
+                parent: artboard,
+                //frame: new sketch.Rectangle( 30, 30, 50, 60),
+                //points: {
+                //  point: [{ x: 10, y: 10}],
+                //  point: [{ x: 100, y: 20}],},
+                points: [{
+                  curveFrom: NSMakePoint(0.1, 0.1),
+                  point: NSMakePoint(0.1, 0.1)
+                }, {
+                  curveFrom: NSMakePoint(0.5, 0.1),
+                  point: NSMakePoint(0.5, 0.1)
+                }],
+                closed: false,
+                style: {
+                  fills: [],
+                  borders: [{
+                    color: '#F78B00'
+                  }]
+                }
               });
-              border.thickness = 3;
-              var documentData = context.document.documentData();
-              var currentParentGroup = documentData.currentPage().currentArtboard() || documentData.currentPage();
-              context.document.currentPage().addLayers([shape]);
               /*
-              new sketch.ShapePath({
-              name: 'Flow way',
-              shapePath: sketch.ShapePath.ShapeType.Custom,
-              parent: artboard,
-              //frame: new sketch.Rectangle( 30, 30, 50, 60),
-              points: [ 
-              { NSMakePoint(10,10), },
-              { NSMakePoint(10,120), },
-                ], 
-              			closed: false,
-              // style: {fills: [],borders: [{ color: '#F78B00' }],},
-              })
+              var path = NSBezierPath.bezierPath();
+               path.moveToPoint(NSMakePoint(artboardX+X, artboardY+Y))
+              path.lineToPoint(NSMakePoint( trgtX/Z, trgtY/Z ))
+               var shape = MSShapeGroup.layerWithPath(MSPath.pathWithBezierPath(path));
+              var border = shape.style().addStylePartOfType(1);
+              border.color = MSColor.colorWithRGBADictionary({r: 0.8, g: 0.1, b: 0.1, a: 1});
+               //shape.parent = artboard;
+              
+              context.document.currentPage().addLayers([shape]);
+              shape.parent = artboard;
+              console.log(shape)
               */
             }
           }
@@ -322,9 +333,8 @@ __webpack_require__.r(__webpack_exports__);
 
     artboard.adjustToFit();
     document.centerOnLayer(artboard);
-    sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message('Creating of flow chart is done!');
-    var sound = NSSound.soundNamed('Tink');
-    sound.play();
+    sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message('🎉 Creating of flow chart is done!');
+    var sound = NSSound.soundNamed('Tink'); //sound.play()
   }
 });
 

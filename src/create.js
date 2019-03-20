@@ -32,6 +32,7 @@ for (var q = pages.length - 1; q >= 0; q--) {
 
 //find or create style for Hotspot representation
 
+/*
 var layersStyles = document.getSharedLayerStyles()
 var sK = layersStyles.length - 1
 
@@ -40,34 +41,34 @@ for (var lsnum = layersStyles.length - 1; lsnum >= 0; lsnum--) {
   
     if(currentStyleName == 'Flow styles/Hotspot'){
       console.log('🤔 Flow styles/Hotspot - is alredy exist' )
-      let dawd = layersStyles[lsnum]
-      const hotspotStyle = layersStyles[lsnum].id
-      console.log(hotspotStyle)
+      const hotspotStyleId = layersStyles[lsnum].id
+      //console.log(layersStyles[lsnum])
     break
     }
-    else{
-      sK--
-    }
-}
+} 
 
-if (sK == lsnum) {
+//if (lsnum == 0) {
   const hotspotStyle = sketch.SharedStyle.fromStyle({
-    name: 'Flow styles/Hotspot',
+        name: 'Flow styles/Hotspot',
     style: {
           fills: [],
           borders: [{ color: '#F78B00' }],
           }, 
     document: document
   });
-  const hotspotStyleId = hotspotStyle.id
-}
+  hotspotStyle.StyleType = Layer
+  
+//}
+const hotspotStyleId = hotspotStyle.id
+
+*/
 
 // Hotspot style is done
 
 
 function getSymbol(symbolID){
 
-  for (var e = symbolsPage.layers.length - 1; q >= 0; q--) {
+  for (var e = symbolsPage.layers.length - 1; q >= 0; q--) { // use getSymbolMasterWithID instead
     if(symbolsPage.layers[q].symbolId == symbolID){
       console.log('🔥🔥🔥 Symbol is finded')
       searchFlow(symbolsPage.layers[q])
@@ -121,7 +122,7 @@ function searchFlow (currentArtboard){
 			else
 			{
 				
-			console.log('flow is Detected')
+			console.log('😺 flow "'+ selectedChild.name +'" is Detected')
 			
 			var X = selectedChild.frame.x/Z
     	var Y = selectedChild.frame.y/Z
@@ -133,11 +134,16 @@ function searchFlow (currentArtboard){
     			frame: new sketch.Rectangle( artboardX+X, artboardY+Y, W, H),
       			parent: artboard,
       			name: selectedChild.name,
-      			sharedStyleId: hotspotStyleId
-    		})		
-      hotspot.style.syncWithSharedStyle(hotspotStyleId)
+      			//sharedStyleId: hotspotStyleId,
+            style: {
+              fills: [],
+              borders: [{ color: '#F78B00' }],
+            }, 
+    		})
 
-    		let trgtID = flw.targetId
+      //hotspot.style.syncWithSharedStyle(hotspotStyleId)
+
+    	let trgtID = flw.targetId
 
 			var targetArtboard = page.layers
 
@@ -156,37 +162,52 @@ function searchFlow (currentArtboard){
 
           var trgtX = targetArtboard[c].frame.x
           var trgtY = targetArtboard[c].frame.y
-          
-          var path = NSBezierPath.bezierPath();
-            //path.parent = artboard; //
-            path.moveToPoint(NSMakePoint(X,Y));
-            path.lineToPoint(NSMakePoint(trgtX/Z,trgtY/Z));
-            //path.lineToPoint(NSMakePoint(100,100));
 
-            var shape = MSShapeGroup.layerWithPath(MSPath.pathWithBezierPath(path));
-            var border = shape.style().addStylePartOfType(1);
-            border.color = MSColor.colorWithRGBADictionary({r: 0.8, g: 0.1, b: 0.1, a: 1});
-            border.thickness = 3;
+          new sketch.ShapePath({
+            name: 'Flow way',
+            shapePath: sketch.ShapePath.ShapeType.Custom,
+            parent: artboard,
+            //frame: new sketch.Rectangle( 30, 30, 50, 60),
+            //points: {
+            //  point: [{ x: 10, y: 10}],
+            //  point: [{ x: 100, y: 20}],},
+
+
+            points: [
+              {
+                curveFrom: NSMakePoint(0.1,0.1),
+                point: NSMakePoint(0.1,0.1),
+              },
+              {
+                curveFrom: NSMakePoint(0.5,0.1),
+                point: NSMakePoint(0.5,0.1),
+              },
+            ],
             
-            var documentData = context.document.documentData();
-            var currentParentGroup = documentData.currentPage().currentArtboard() || documentData.currentPage()
-            context.document.currentPage().addLayers([shape]);
-          
-         
+            closed: false,
+            style: {
+              fills: [],
+              borders: [{ color: '#F78B00' }],
+            },
+          })
+
+
+
           /*
-    				new sketch.ShapePath({
-						name: 'Flow way',
-						shapePath: sketch.ShapePath.ShapeType.Custom,
-						parent: artboard,
-						//frame: new sketch.Rectangle( 30, 30, 50, 60),
-						points: [ 
-						{ NSMakePoint(10,10), },
-    				{ NSMakePoint(10,120), },
-            ], 
-						
-						closed: false,
-						// style: {fills: [],borders: [{ color: '#F78B00' }],},
-					})
+          var path = NSBezierPath.bezierPath();
+
+          path.moveToPoint(NSMakePoint(artboardX+X, artboardY+Y))
+          path.lineToPoint(NSMakePoint( trgtX/Z, trgtY/Z ))
+
+          var shape = MSShapeGroup.layerWithPath(MSPath.pathWithBezierPath(path));
+          var border = shape.style().addStylePartOfType(1);
+          border.color = MSColor.colorWithRGBADictionary({r: 0.8, g: 0.1, b: 0.1, a: 1});
+
+          //shape.parent = artboard;
+          
+          context.document.currentPage().addLayers([shape]);
+          shape.parent = artboard;
+          console.log(shape)
           */
 
 				}
@@ -276,10 +297,10 @@ artboard.adjustToFit()
 
 document.centerOnLayer(artboard)
 
-sketch.UI.message('Creating of flow chart is done!')
+sketch.UI.message('🎉 Creating of flow chart is done!')
 
 var sound = NSSound.soundNamed('Tink')
-sound.play()
+//sound.play()
 
 }
 
