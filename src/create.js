@@ -163,24 +163,21 @@ function searchFlow (currentArtboard){
           var trgtX = targetArtboard[c].frame.x
           var trgtY = targetArtboard[c].frame.y
 
-          new sketch.ShapePath({
+          var wayPath = new sketch.ShapePath({
             name: 'Flow way',
-            shapePath: sketch.ShapePath.ShapeType.Custom,
+            shapeType: sketch.ShapePath.ShapeType.Custom,
             parent: artboard,
-            //frame: new sketch.Rectangle( 30, 30, 50, 60),
-            //points: {
-            //  point: [{ x: 10, y: 10}],
-            //  point: [{ x: 100, y: 20}],},
-
-
-            points: [
+            frame: new sketch.Rectangle( artboardX, artboardY, trgtX/Z, trgtY/Z),
+             points: [
               {
-                curveFrom: NSMakePoint(0.1,0.1),
+                //curveFrom: NSMakePoint(0.1,0.1),
                 point: NSMakePoint(0.1,0.1),
+                pointTipe: sketch.Straight,
               },
               {
-                curveFrom: NSMakePoint(0.5,0.1),
+                //curveFrom: NSMakePoint(0.5,0.1),
                 point: NSMakePoint(0.5,0.1),
+                pointTipe: sketch.Straight,
               },
             ],
             
@@ -191,7 +188,12 @@ function searchFlow (currentArtboard){
             },
           })
 
+          var path = NSBezierPath.bezierPath();
 
+          path.moveToPoint(NSMakePoint(artboardX+X, artboardY+Y))
+          path.lineToPoint(NSMakePoint( trgtX/Z, trgtY/Z ))
+
+          wayPath = sketch.ShapePath.path
 
           /*
           var path = NSBezierPath.bezierPath();
@@ -293,7 +295,7 @@ else
 
     }
 
-artboard.adjustToFit()
+//artboard.adjustToFit()
 
 document.centerOnLayer(artboard)
 

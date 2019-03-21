@@ -230,20 +230,19 @@ __webpack_require__.r(__webpack_exports__);
               });
               var trgtX = targetArtboard[c].frame.x;
               var trgtY = targetArtboard[c].frame.y;
-              new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath({
+              var wayPath = new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath({
                 name: 'Flow way',
-                shapePath: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath.ShapeType.Custom,
+                shapeType: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath.ShapeType.Custom,
                 parent: artboard,
-                //frame: new sketch.Rectangle( 30, 30, 50, 60),
-                //points: {
-                //  point: [{ x: 10, y: 10}],
-                //  point: [{ x: 100, y: 20}],},
+                frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(artboardX, artboardY, trgtX / Z, trgtY / Z),
                 points: [{
-                  curveFrom: NSMakePoint(0.1, 0.1),
-                  point: NSMakePoint(0.1, 0.1)
+                  //curveFrom: NSMakePoint(0.1,0.1),
+                  point: NSMakePoint(0.1, 0.1),
+                  pointTipe: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Straight
                 }, {
-                  curveFrom: NSMakePoint(0.5, 0.1),
-                  point: NSMakePoint(0.5, 0.1)
+                  //curveFrom: NSMakePoint(0.5,0.1),
+                  point: NSMakePoint(0.5, 0.1),
+                  pointTipe: sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Straight
                 }],
                 closed: false,
                 style: {
@@ -253,6 +252,10 @@ __webpack_require__.r(__webpack_exports__);
                   }]
                 }
               });
+              var path = NSBezierPath.bezierPath();
+              path.moveToPoint(NSMakePoint(artboardX + X, artboardY + Y));
+              path.lineToPoint(NSMakePoint(trgtX / Z, trgtY / Z));
+              wayPath = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.ShapePath.path;
               /*
               var path = NSBezierPath.bezierPath();
                path.moveToPoint(NSMakePoint(artboardX+X, artboardY+Y))
@@ -329,9 +332,9 @@ __webpack_require__.r(__webpack_exports__);
         frame: new sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle(artboardX, artboardY - 20, artboardW)
       });
       searchFlow(currentArtboard);
-    }
+    } //artboard.adjustToFit()
 
-    artboard.adjustToFit();
+
     document.centerOnLayer(artboard);
     sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message('🎉 Creating of flow chart is done!');
     var sound = NSSound.soundNamed('Tink'); //sound.play()
